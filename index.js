@@ -26,8 +26,8 @@ function addToDisplay(el, input) {
     if( el.textContent === '0') {
         el.textContent = input.value;
     } else {
-        //ele empty update value
-        // updateExpenses();
+        //else add individual button items to ul
+        // addToBudgetList();
     }
 }
 
