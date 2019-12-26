@@ -1,6 +1,7 @@
 //jshint esversion: 6
 const submitItem = document.querySelector(".budget-item-submit");
 let totalExpenses = 0;
+let totalIncome = 0;
 
 submitItem.addEventListener('click', function() {
     const option = document.querySelector('.option');
@@ -11,9 +12,13 @@ submitItem.addEventListener('click', function() {
 
     if(option.value === 'exp') {
         addToDisplay(displayExpense, input);
+        updateExpenses(input, displayExpense);
+        clearFields(input);
     }
     else {
         addToDisplay(displayIncome, input);
+        updateIncome(input, displayIncome);
+        clearFields(input);
     }
 });
 
@@ -24,4 +29,18 @@ function addToDisplay(el, input) {
         //ele empty update value
         // updateExpenses();
     }
+}
+
+function updateExpenses(input, el) {
+    totalExpenses += parseInt(input.value);
+    el.textContent = totalExpenses;
+}
+
+function updateIncome(input, el) {
+    totalIncome += parseInt(input.value);
+    el.textContent = totalIncome;
+}
+
+function clearFields(el) {
+    el.value = ' ';
 }
