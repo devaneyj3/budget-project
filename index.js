@@ -16,14 +16,15 @@ submitItem.addEventListener('click', function () {
             addToDisplay(displayExpense, input);
             updateExpenses(input, displayExpense);
             addToExpenseList(input.value, category.value);
-            clearFields(input);
         }
         else {
             addToDisplay(displayIncome, input);
             updateIncome(input, displayIncome);
             addToIncomeList(input.value, category.value);
-            clearFields(input);
         }
+        //reset the input and category fields
+        //TODO: Why is placeholder being reset on category
+        clearFields(input, category);
     }
     else {
         const error = document.querySelector('.error');
@@ -61,8 +62,9 @@ function updateIncome(input, el) {
     el.textContent = `+ $${formatedIncome}`;
 }
 
-function clearFields(el) {
+function clearFields(el, category) {
     el.value = ' ';
+    category.value = ' ';
 }
 
 function formatWithCommas(value) {
