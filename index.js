@@ -65,7 +65,8 @@ function formatWithCommas(value) {
 function addToIncomeList(value) {
     const incomeList = document.querySelector('.income');
     let li = document.createElement('li');
-    li.appendChild(document.createTextNode(value));
+    let formatedIncome = formatWithCommas(value.toString());
+    li.appendChild(document.createTextNode(`+ $${formatedIncome}`));
     li.setAttribute("class", "income-item"); // added line
     incomeList.appendChild(li);
 }
@@ -73,7 +74,8 @@ function addToIncomeList(value) {
 function addToExpenseList(value) {
     const expensesList = document.querySelector('.expenses');
     let li = document.createElement('li');
-    li.appendChild(document.createTextNode(value));
+    let formatedExpense = formatWithCommas(value.toString());
+    li.appendChild(document.createTextNode(`- $${formatedExpense}`));
     li.setAttribute("class", "expense-item"); // added line
     expensesList.appendChild(li);
 }
