@@ -149,14 +149,14 @@ table {
 }
 .budget-container .budget-columns {
   display: flex;
+  justify-content: space-evenly;
 }
 .budget-container .budget-columns h1 {
   text-align: center;
   font-size: 2rem;
 }
-.budget-container .budget-columns .expenses {
-  width: 50%;
-}
-.budget-container .budget-columns .income {
-  width: 50%;
+.budget-container .budget-columns .expense-container,
+.budget-container .budget-columns .income-container {
+  display: flex;
+  flex-direction: column;
 }
