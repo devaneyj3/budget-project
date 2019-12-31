@@ -8,24 +8,33 @@ submitItem.addEventListener('click', function () {
     const input = document.querySelector('.input-num');
     const displayExpense = document.querySelector('.exp-output');
     const displayIncome = document.querySelector('.inc-output');
+    const category = document.querySelector('.category');
     
 
-    if (input.value) {
+    if (input.value && category.value) {
         if (option.value === 'exp') {
             addToDisplay(displayExpense, input);
             updateExpenses(input, displayExpense);
-            addToExpenseList(input.value);
+            addToExpenseList(input.value, category.value);
             clearFields(input);
         }
         else {
             addToDisplay(displayIncome, input);
             updateIncome(input, displayIncome);
-            addToIncomeList(input.value);
+            addToIncomeList(input.value, category.value);
             clearFields(input);
         }
     }
     else {
-        console.log("Enter a number");
+        const error = document.querySelector('.error');
+        if ( input.value) {
+            error.textContent = 'Add a category';
+        } else if ( category.value) {
+            error.textContent = 'Add a number';
+        } else {
+            error.textContent = 'Add a category and a number';
+        }
+        
     }
 });
 
@@ -66,20 +75,20 @@ function formatWithCommas(value) {
     if (decimalIndex > -1) { readableNum += decimalPlaces; } return readableNum;
 }
 
-function addToIncomeList(value) {
+function addToIncomeList(value, category) {
     const incomeList = document.querySelector('.income');
     let li = document.createElement('li');
     let formatedIncome = formatWithCommas(value.toString());
-    li.appendChild(document.createTextNode(`+ $${formatedIncome}`));
+    li.appendChild(document.createTextNode(`+ $${formatedIncome} - ${category}`));
     li.setAttribute("class", "income-item"); // added line
     incomeList.appendChild(li);
 }
 
-function addToExpenseList(value) {
+function addToExpenseList(value, category) {
     const expensesList = document.querySelector('.expenses');
     let li = document.createElement('li');
     let formatedExpense = formatWithCommas(value.toString());
-    li.appendChild(document.createTextNode(`- $${formatedExpense}`));
+    li.appendChild(document.createTextNode(`- $${formatedExpense} - ${category}` ));
     li.setAttribute("class", "expense-item"); // added line
     expensesList.appendChild(li);
 }
