@@ -10,18 +10,22 @@ submitItem.addEventListener('click', function () {
     const displayIncome = document.querySelector('.inc-output');
     
 
-
-    if (option.value === 'exp') {
-        addToDisplay(displayExpense, input);
-        updateExpenses(input, displayExpense);
-        addToExpenseList(input.value);
-        clearFields(input);
+    if (input.value) {
+        if (option.value === 'exp') {
+            addToDisplay(displayExpense, input);
+            updateExpenses(input, displayExpense);
+            addToExpenseList(input.value);
+            clearFields(input);
+        }
+        else {
+            addToDisplay(displayIncome, input);
+            updateIncome(input, displayIncome);
+            addToIncomeList(input.value);
+            clearFields(input);
+        }
     }
     else {
-        addToDisplay(displayIncome, input);
-        updateIncome(input, displayIncome);
-        addToIncomeList(input.value);
-        clearFields(input);
+        console.log("Enter a number");
     }
 });
 
