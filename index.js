@@ -8,16 +8,19 @@ submitItem.addEventListener('click', function () {
     const input = document.querySelector('.input-num');
     const displayExpense = document.querySelector('.exp-output');
     const displayIncome = document.querySelector('.inc-output');
+    
 
 
     if (option.value === 'exp') {
         addToDisplay(displayExpense, input);
         updateExpenses(input, displayExpense);
+        addToExpenseList(input.value);
         clearFields(input);
     }
     else {
         addToDisplay(displayIncome, input);
         updateIncome(input, displayIncome);
+        addToIncomeList(input.value);
         clearFields(input);
     }
 });
@@ -32,28 +35,45 @@ function addToDisplay(el, input) {
 }
 
 function updateExpenses(input, el) {
-    totalExpenses += parseInt(input.value);
+    totalExpenses += parseFloat(input.value);
     // format the updated expenses with comma
     let formatedExpense = formatWithCommas(totalExpenses.toString());
-    el.textContent = formatedExpense;
+    el.textContent = `- $${formatedExpense}`;
 }
 
 function updateIncome(input, el) {
-    totalIncome += parseInt(input.value);
+    totalIncome += parseFloat(input.value);
     // format the updated expenses with comma
     let formatedIncome = formatWithCommas(totalIncome.toString());
-    el.textContent = formatedIncome;
+    el.textContent = `+ $${formatedIncome}`;
 }
 
 function clearFields(el) {
     el.value = ' ';
 }
 
-function formatWithCommas(value, decimalIndex) {
+function formatWithCommas(value) {
+    let decimalIndex = value.indexOf('.');
     let count = 0;
     let readableNum = "";
     decimalIndex = (decimalIndex === -1) ? undefined : decimalIndex;
     let decimalPlaces = value.substr(decimalIndex);
     value.substring(0, decimalIndex).split("").reverse().forEach((element) => { if (count === 3 && value.substring(0, decimalIndex).length > 3 && element !== "-") { readableNum += `,${element}`; count = 0; } else { readableNum += element; } count++; }); readableNum = readableNum.split("").reverse().join("");
     if (decimalIndex > -1) { readableNum += decimalPlaces; } return readableNum;
+}
+
+function addToIncomeList(value) {
+    const incomeList = document.querySelector('.income');
+    let li = document.createElement('li');
+    li.appendChild(document.createTextNode(value));
+    li.setAttribute("class", "income-item"); // added line
+    incomeList.appendChild(li);
+}
+
+function addToExpenseList(value) {
+    const expensesList = document.querySelector('.expenses');
+    let li = document.createElement('li');
+    li.appendChild(document.createTextNode(value));
+    li.setAttribute("class", "expense-item"); // added line
+    expensesList.appendChild(li);
 }
