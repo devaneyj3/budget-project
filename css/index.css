@@ -130,21 +130,22 @@ table {
   margin: 5%;
   border: 1px solid black;
 }
-.budget-container .display-output {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-}
 .budget-container .display-output .inc-output {
   color: green;
+  margin-top: 5%;
 }
 .budget-container .display-output .exp-output {
   color: red;
   margin-top: 5%;
 }
-.budget-container .display-output .budget-input {
+.budget-container .display-output .current-balances {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.budget-container .budget-input {
+  display: flex;
+  justify-content: center;
   margin-top: 5%;
 }
 .budget-container .budget-columns {
