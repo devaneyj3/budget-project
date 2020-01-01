@@ -89,8 +89,20 @@ function addToIncomeList(value, category) {
 function addToExpenseList(value, category) {
     const expensesList = document.querySelector('.expenses');
     let li = document.createElement('li');
+    li.setAttribute('class', 'expense-item');
+    const expenseItem = document.querySelector('.expense-item');
+
+    console.log(expenseItem.value);
+
+    //get percentage of current income
+   // let percentage = percentageofIncome(expenseItem);
     let formatedExpense = formatWithCommas(value.toString());
-    li.appendChild(document.createTextNode(`- $${formatedExpense} - ${category}` ));
-    li.setAttribute("class", "expense-item"); // added line
+    li.appendChild(document.createTextNode(`${formatedExpense}`));
     expensesList.appendChild(li);
+}
+
+function percentageofIncome(value) {
+    console.log(value.textContent);
+    return parseInt((value.textContent)/totalIncome);
+
 }
