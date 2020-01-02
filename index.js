@@ -3,21 +3,31 @@ const submitItem = document.querySelector(".budget-item-submit");
 let totalExpenses = 0;
 let totalIncome = 0;
 
+let expenseItems = [];
+let incomeItems = [];
+
 submitItem.addEventListener('click', function () {
     const option = document.querySelector('.option');
     const input = document.querySelector('.input-num');
     const displayExpense = document.querySelector('.exp-output');
     const displayIncome = document.querySelector('.inc-output');
     const category = document.querySelector('.category');
-    
+
 
     if (input.value && category.value) {
         if (option.value === 'exp') {
+            //create new expense object
+            let newExpense = new Expenses(option.value, input.value, category.value);
+            expenseItems.push(newExpense);
+
             addToDisplay(displayExpense, input);
             updateExpenses(input, displayExpense);
             addToExpenseList(input.value, category.value);
+
         }
         else {
+            let newIncome = new Incomes(option.value, input.value, category.value);
+            incomeItems.push(newIncome);
             addToDisplay(displayIncome, input);
             updateIncome(input, displayIncome);
             addToIncomeList(input.value, category.value);
@@ -28,14 +38,14 @@ submitItem.addEventListener('click', function () {
     }
     else {
         const error = document.querySelector('.error');
-        if ( input.value) {
+        if (input.value) {
             error.textContent = 'Add a category';
-        } else if ( category.value) {
+        } else if (category.value) {
             error.textContent = 'Add a number';
         } else {
             error.textContent = 'Add a category and a number';
         }
-        
+
     }
 });
 
@@ -90,19 +100,29 @@ function addToExpenseList(value, category) {
     const expensesList = document.querySelector('.expenses');
     let li = document.createElement('li');
     li.setAttribute('class', 'expense-item');
-    const expenseItem = document.querySelector('.expense-item');
-
-    console.log(expenseItem.value);
-
-    //get percentage of current income
-   // let percentage = percentageofIncome(expenseItem);
     let formatedExpense = formatWithCommas(value.toString());
-    li.appendChild(document.createTextNode(`${formatedExpense}`));
+    li.appendChild(document.createTextNode(`${formatedExpense} - ${category}`));
     expensesList.appendChild(li);
+
+    //Update percentage based on income
+    updatePercentage(li);
 }
 
-function percentageofIncome(value) {
-    console.log(value.textContent);
-    return parseInt((value.textContent)/totalIncome);
+function updatePercentage(li) {
+    //update the percentage based on the income
+    let span = document.createElement('span');
+    span.setAttribute('class', 'percentage');
+    let toNum = parseInt(`${li.textContent}`);
+    let percentage = (toNum / totalIncome) * 100;
+
+    //handles if divide by 0
+    if (totalIncome != 0) {
+        span.appendChild(document.createTextNode(`${percentage}%`));
+
+    } else {
+        span.appendChild(document.createTextNode(`-`));
+        totalExpenses += 0;
+    }
+    li.appendChild(span);
 
 }
