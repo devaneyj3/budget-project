@@ -6,6 +6,7 @@ let totalIncome = 0;
 let expenseItems = [];
 let incomeItems = [];
 
+
 submitItem.addEventListener('click', function () {
     const option = document.querySelector('.option');
     const input = document.querySelector('.input-num');
@@ -27,14 +28,14 @@ submitItem.addEventListener('click', function () {
             updateExpenses(newExpense.amount, displayExpense);
 
             //add indivual expense items to expense list
-            addToExpenseList(newExpense.amount, newExpense.category);
+            addToExpenseList();
 
         }
         else {
             //create new income object and push to array
             let newIncome = new Incomes(option.value, input.value, category.value);
             incomeItems.push(newIncome);
-            
+
             //add object amount to display
             addToDisplay(displayIncome, newIncome.amount);
 
@@ -42,11 +43,12 @@ submitItem.addEventListener('click', function () {
             updateIncome(newIncome.amount, displayIncome);
 
             //add indivual income items to income list
-            addToIncomeList(newIncome.amount, newIncome.category);
+            addToIncomeList();
         }
         //reset the input and category fields
         //TODO: Why is placeholder being reset on category
         clearFields(input, category);
+        updatePercentage();
     }
     else {
         const error = document.querySelector('.error');
@@ -99,42 +101,49 @@ function formatWithCommas(value) {
     if (decimalIndex > -1) { readableNum += decimalPlaces; } return readableNum;
 }
 
-function addToIncomeList(value, category) {
+function addToIncomeList() {
     const incomeList = document.querySelector('.income');
     let li = document.createElement('li');
-    let formatedIncome = formatWithCommas(value.toString());
-    li.appendChild(document.createTextNode(`+ $${formatedIncome} - ${category}`));
-    li.setAttribute("class", "income-item"); // added line
-    incomeList.appendChild(li);
+    incomeItems.forEach((e) => {
+        li.setAttribute("class", "income-item");
+        let formatedIncome = formatWithCommas(e.amount.toString());
+        e.amount = formatedIncome;
+        li.textContent = `${e.amount} - ${e.category}`;
+        incomeList.appendChild(li);
+    });
 }
 
-function addToExpenseList(value, category) {
+function addToExpenseList() {
     const expensesList = document.querySelector('.expenses');
-    let li = document.createElement('li');
-    li.setAttribute('class', 'expense-item');
-    let formatedExpense = formatWithCommas(value.toString());
-    li.appendChild(document.createTextNode(`${formatedExpense} - ${category}`));
-    expensesList.appendChild(li);
+    let expenseLi = document.createElement('li');
+    expenseItems.forEach((e) => {
+        expenseLi.setAttribute('class', 'expense-item');
+        let formatedExpense = formatWithCommas(e.amount.toString());
+        e.amount = formatedExpense;
+        expenseLi.textContent = `${e.amount} - ${e.category}`;
+        expensesList.appendChild(expenseLi);
+    });
 
     //Update percentage based on income
-    updatePercentage(li);
+  //  updatePercentage(li);
 }
 
-function updatePercentage(li) {
+function updatePercentage() {
     //update the percentage based on the income
     let span = document.createElement('span');
     span.setAttribute('class', 'percentage');
-    let toNum = parseInt(`${li.textContent}`);
-    let percentage = (toNum / totalIncome) * 100;
 
     //handles if divide by 0
     if (totalIncome != 0) {
-        span.appendChild(document.createTextNode(`${percentage}%`));
-
+        expenseItems.forEach((e) => {
+            console.log(e.amount);
+            let percentage = (e.amount / totalIncome) * 100;
+            e.percentage = percentage.toFixed(1);
+            span.appendChild(document.createTextNode(`${e.percentage}%`));
+            expenseLi.appendChild(span);
+        });
     } else {
         span.appendChild(document.createTextNode(`-`));
         totalExpenses += 0;
     }
-    li.appendChild(span);
-
 }
