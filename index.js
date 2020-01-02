@@ -20,17 +20,29 @@ submitItem.addEventListener('click', function () {
             let newExpense = new Expenses(option.value, input.value, category.value);
             expenseItems.push(newExpense);
 
-            addToDisplay(displayExpense, input);
-            updateExpenses(input, displayExpense);
-            addToExpenseList(input.value, category.value);
+            //add object amount to display
+            addToDisplay(displayExpense, newExpense.amount);
+
+            //increment total expense and display it
+            updateExpenses(newExpense.amount, displayExpense);
+
+            //add indivual expense items to expense list
+            addToExpenseList(newExpense.amount, newExpense.category);
 
         }
         else {
+            //create new income object and push to array
             let newIncome = new Incomes(option.value, input.value, category.value);
             incomeItems.push(newIncome);
-            addToDisplay(displayIncome, input);
-            updateIncome(input, displayIncome);
-            addToIncomeList(input.value, category.value);
+            
+            //add object amount to display
+            addToDisplay(displayIncome, newIncome.amount);
+
+            //increment total income and display it
+            updateIncome(newIncome.amount, displayIncome);
+
+            //add indivual income items to income list
+            addToIncomeList(newIncome.amount, newIncome.category);
         }
         //reset the input and category fields
         //TODO: Why is placeholder being reset on category
@@ -59,14 +71,14 @@ function addToDisplay(el, input) {
 }
 
 function updateExpenses(input, el) {
-    totalExpenses += parseFloat(input.value);
+    totalExpenses += parseFloat(input);
     // format the updated expenses with comma
     let formatedExpense = formatWithCommas(totalExpenses.toString());
     el.textContent = `- $${formatedExpense}`;
 }
 
 function updateIncome(input, el) {
-    totalIncome += parseFloat(input.value);
+    totalIncome += parseFloat(input);
     // format the updated expenses with comma
     let formatedIncome = formatWithCommas(totalIncome.toString());
     el.textContent = `+ $${formatedIncome}`;
