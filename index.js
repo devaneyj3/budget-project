@@ -6,7 +6,6 @@ let totalIncome = 0;
 let expenseItems = [];
 let incomeItems = [];
 
-
 submitItem.addEventListener('click', function () {
     const option = document.querySelector('.option');
     const input = document.querySelector('.input-num');
@@ -23,9 +22,11 @@ submitItem.addEventListener('click', function () {
 
             //add object amount to display
             addToDisplay(displayExpense, newExpense.amount);
+            updatePercentage();
 
             //increment total expense and display it
             updateExpenses(newExpense.amount, displayExpense);
+
 
             //add indivual expense items to expense list
             addToExpenseList();
@@ -120,30 +121,22 @@ function addToExpenseList() {
         expenseLi.setAttribute('class', 'expense-item');
         let formatedExpense = formatWithCommas(e.amount.toString());
         e.amount = formatedExpense;
-        expenseLi.textContent = `${e.amount} - ${e.category}`;
+        expenseLi.textContent = `${e.amount} - ${e.category} -  `;
+        
         expensesList.appendChild(expenseLi);
     });
-
-    //Update percentage based on income
-  //  updatePercentage(li);
 }
 
 function updatePercentage() {
-    //update the percentage based on the income
-    let span = document.createElement('span');
-    span.setAttribute('class', 'percentage');
-
-    //handles if divide by 0
-    if (totalIncome != 0) {
-        expenseItems.forEach((e) => {
-            console.log(e.amount);
-            let percentage = (e.amount / totalIncome) * 100;
+    expenseItems.forEach((e) => {
+        if (totalIncome != 0) {
+            let amount = e.amount;
+            let noCommas = amount.replace(/\,/g,'');
+            let percentage = (noCommas / totalIncome) * 100;
             e.percentage = percentage.toFixed(1);
-            span.appendChild(document.createTextNode(`${e.percentage}%`));
-            expenseLi.appendChild(span);
-        });
-    } else {
-        span.appendChild(document.createTextNode(`-`));
-        totalExpenses += 0;
-    }
+            console.log(e.percentage);
+        } else {
+            return;
+        }
+    });
 }
