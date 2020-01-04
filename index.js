@@ -3,39 +3,64 @@ const submitItem = document.querySelector(".budget-item-submit");
 let totalExpenses = 0;
 let totalIncome = 0;
 
+let expenseItems = [];
+let incomeItems = [];
+
 submitItem.addEventListener('click', function () {
     const option = document.querySelector('.option');
     const input = document.querySelector('.input-num');
     const displayExpense = document.querySelector('.exp-output');
     const displayIncome = document.querySelector('.inc-output');
     const category = document.querySelector('.category');
-    
+
 
     if (input.value && category.value) {
         if (option.value === 'exp') {
-            addToDisplay(displayExpense, input);
-            updateExpenses(input, displayExpense);
-            addToExpenseList(input.value, category.value);
+            //create new expense object
+            let newExpense = new Expenses(option.value, input.value, category.value);
+            expenseItems.push(newExpense);
+
+            //add object amount to display
+            addToDisplay(displayExpense, newExpense.amount);
+            updatePercentage();
+
+            //increment total expense and display it
+            updateExpenses(newExpense.amount, displayExpense);
+
+
+            //add indivual expense items to expense list
+            addToExpenseList();
+
         }
         else {
-            addToDisplay(displayIncome, input);
-            updateIncome(input, displayIncome);
-            addToIncomeList(input.value, category.value);
+            //create new income object and push to array
+            let newIncome = new Incomes(option.value, input.value, category.value);
+            incomeItems.push(newIncome);
+
+            //add object amount to display
+            addToDisplay(displayIncome, newIncome.amount);
+
+            //increment total income and display it
+            updateIncome(newIncome.amount, displayIncome);
+
+            //add indivual income items to income list
+            addToIncomeList();
         }
         //reset the input and category fields
         //TODO: Why is placeholder being reset on category
         clearFields(input, category);
+        updatePercentage();
     }
     else {
         const error = document.querySelector('.error');
-        if ( input.value) {
+        if (input.value) {
             error.textContent = 'Add a category';
-        } else if ( category.value) {
+        } else if (category.value) {
             error.textContent = 'Add a number';
         } else {
             error.textContent = 'Add a category and a number';
         }
-        
+
     }
 });
 
@@ -49,14 +74,14 @@ function addToDisplay(el, input) {
 }
 
 function updateExpenses(input, el) {
-    totalExpenses += parseFloat(input.value);
+    totalExpenses += parseFloat(input);
     // format the updated expenses with comma
     let formatedExpense = formatWithCommas(totalExpenses.toString());
     el.textContent = `- $${formatedExpense}`;
 }
 
 function updateIncome(input, el) {
-    totalIncome += parseFloat(input.value);
+    totalIncome += parseFloat(input);
     // format the updated expenses with comma
     let formatedIncome = formatWithCommas(totalIncome.toString());
     el.textContent = `+ $${formatedIncome}`;
@@ -77,20 +102,41 @@ function formatWithCommas(value) {
     if (decimalIndex > -1) { readableNum += decimalPlaces; } return readableNum;
 }
 
-function addToIncomeList(value, category) {
+function addToIncomeList() {
     const incomeList = document.querySelector('.income');
     let li = document.createElement('li');
-    let formatedIncome = formatWithCommas(value.toString());
-    li.appendChild(document.createTextNode(`+ $${formatedIncome} - ${category}`));
-    li.setAttribute("class", "income-item"); // added line
-    incomeList.appendChild(li);
+    incomeItems.forEach((e) => {
+        li.setAttribute("class", "income-item");
+        let formatedIncome = formatWithCommas(e.amount.toString());
+        e.amount = formatedIncome;
+        li.textContent = `${e.amount} - ${e.category}`;
+        incomeList.appendChild(li);
+    });
 }
 
-function addToExpenseList(value, category) {
+function addToExpenseList() {
     const expensesList = document.querySelector('.expenses');
-    let li = document.createElement('li');
-    let formatedExpense = formatWithCommas(value.toString());
-    li.appendChild(document.createTextNode(`- $${formatedExpense} - ${category}` ));
-    li.setAttribute("class", "expense-item"); // added line
-    expensesList.appendChild(li);
+    let expenseLi = document.createElement('li');
+    expenseItems.forEach((e) => {
+        expenseLi.setAttribute('class', 'expense-item');
+        let formatedExpense = formatWithCommas(e.amount.toString());
+        e.amount = formatedExpense;
+        expenseLi.textContent = `${e.amount} - ${e.category} -  `;
+        
+        expensesList.appendChild(expenseLi);
+    });
+}
+
+function updatePercentage() {
+    expenseItems.forEach((e) => {
+        if (totalIncome != 0) {
+            let amount = e.amount;
+            let noCommas = amount.replace(/\,/g,'');
+            let percentage = (noCommas / totalIncome) * 100;
+            e.percentage = percentage.toFixed(1);
+            console.log(e.percentage);
+        } else {
+            return;
+        }
+    });
 }
