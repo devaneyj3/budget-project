@@ -48,7 +48,7 @@ submitItem.addEventListener('click', function () {
         //reset the input and category fields
         //TODO: Why is placeholder being reset on category
         clearFields(input, category);
-        showUpdatePercentage();
+        updatePercentage();
     }
     else {
         const error = document.querySelector('.error');
@@ -126,25 +126,17 @@ function addToExpenseList() {
     });
 }
 
-function updatePercentage(el) {
-    expenseItems.forEach((e) => {
+function updatePercentage() {
+    expenseItems.forEach((e, i) => {
         if (totalIncome != 0) {
+            const expenseItemDOM = document.querySelectorAll('.expense-item');
             let amount = e.amount;
             let noCommas = amount.replace(/\,/g,'');
             let percentage = (noCommas / totalIncome) * 100;
             e.percentage = percentage.toFixed(1);
-            el.append(e.percentage);
+            expenseItemDOM[i].append(e.percentage);
         } else {
             return;
         }
-    });
-}
-
-function showUpdatePercentage() {
-    const expenseItemDOM = document.querySelectorAll('.expense-item');
-    expenseItemDOM.forEach((e) => { 
-        console.log(e.value);
-        updatePercentage(e);
-
     });
 }
