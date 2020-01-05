@@ -22,8 +22,7 @@ submitItem.addEventListener('click', function () {
 
             //add object amount to display
             addToDisplay(displayExpense, newExpense.amount);
-            updatePercentage();
-
+    
             //increment total expense and display it
             updateExpenses(newExpense.amount, displayExpense);
 
@@ -49,7 +48,6 @@ submitItem.addEventListener('click', function () {
         //reset the input and category fields
         //TODO: Why is placeholder being reset on category
         clearFields(input, category);
-        updatePercentage();
     }
     else {
         const error = document.querySelector('.error');
@@ -62,6 +60,8 @@ submitItem.addEventListener('click', function () {
         }
 
     }
+    updatePercentage();
+
 });
 
 function addToDisplay(el, input) {
@@ -109,7 +109,7 @@ function addToIncomeList() {
         li.setAttribute("class", "income-item");
         let formatedIncome = formatWithCommas(e.amount.toString());
         e.amount = formatedIncome;
-        li.textContent = `${e.amount} - ${e.category}`;
+        li.textContent = `$${e.amount} - ${e.category}`;
         incomeList.appendChild(li);
     });
 }
@@ -121,20 +121,21 @@ function addToExpenseList() {
         expenseLi.setAttribute('class', 'expense-item');
         let formatedExpense = formatWithCommas(e.amount.toString());
         e.amount = formatedExpense;
-        expenseLi.textContent = `${e.amount} - ${e.category} -  `;
+        expenseLi.textContent = `$${e.amount} - ${e.category} -  `;
         
         expensesList.appendChild(expenseLi);
     });
 }
 
 function updatePercentage() {
-    expenseItems.forEach((e) => {
+    expenseItems.forEach((e, i) => {
         if (totalIncome != 0) {
+            const expenseItemDOM = document.querySelectorAll('.expense-item');
             let amount = e.amount;
             let noCommas = amount.replace(/\,/g,'');
             let percentage = (noCommas / totalIncome) * 100;
             e.percentage = percentage.toFixed(1);
-            console.log(e.percentage);
+            expenseItemDOM[i].textContent = `$${e.amount} - ${e.category} -  ${e.percentage}%`;
         } else {
             return;
         }
