@@ -109,7 +109,7 @@ function addToIncomeList() {
         li.setAttribute("class", "income-item");
         let formatedIncome = formatWithCommas(e.amount.toString());
         e.amount = formatedIncome;
-        li.textContent = `${e.amount} - ${e.category}`;
+        li.textContent = `$${e.amount} - ${e.category}`;
         incomeList.appendChild(li);
     });
 }
@@ -121,7 +121,7 @@ function addToExpenseList() {
         expenseLi.setAttribute('class', 'expense-item');
         let formatedExpense = formatWithCommas(e.amount.toString());
         e.amount = formatedExpense;
-        expenseLi.textContent = `${e.amount} - ${e.category} -  `;
+        expenseLi.textContent = `$${e.amount} - ${e.category} -  `;
         
         expensesList.appendChild(expenseLi);
     });
@@ -135,7 +135,7 @@ function updatePercentage() {
             let noCommas = amount.replace(/\,/g,'');
             let percentage = (noCommas / totalIncome) * 100;
             e.percentage = percentage.toFixed(1);
-            expenseItemDOM[i].textContent = `${e.amount} - ${e.category} -  ${e.percentage}`;
+            expenseItemDOM[i].textContent = `$${e.amount} - ${e.category} -  ${e.percentage}%`;
         } else {
             return;
         }
