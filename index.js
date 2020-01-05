@@ -22,8 +22,7 @@ submitItem.addEventListener('click', function () {
 
             //add object amount to display
             addToDisplay(displayExpense, newExpense.amount);
-            updatePercentage();
-
+    
             //increment total expense and display it
             updateExpenses(newExpense.amount, displayExpense);
 
@@ -49,7 +48,7 @@ submitItem.addEventListener('click', function () {
         //reset the input and category fields
         //TODO: Why is placeholder being reset on category
         clearFields(input, category);
-        updatePercentage();
+        showUpdatePercentage();
     }
     else {
         const error = document.querySelector('.error');
@@ -127,16 +126,25 @@ function addToExpenseList() {
     });
 }
 
-function updatePercentage() {
+function updatePercentage(el) {
     expenseItems.forEach((e) => {
         if (totalIncome != 0) {
             let amount = e.amount;
             let noCommas = amount.replace(/\,/g,'');
             let percentage = (noCommas / totalIncome) * 100;
             e.percentage = percentage.toFixed(1);
-            console.log(e.percentage);
+            el.append(e.percentage);
         } else {
             return;
         }
+    });
+}
+
+function showUpdatePercentage() {
+    const expenseItemDOM = document.querySelectorAll('.expense-item');
+    expenseItemDOM.forEach((e) => { 
+        console.log(e.value);
+        updatePercentage(e);
+
     });
 }
