@@ -8,14 +8,14 @@ class Budget {
 }
 
 class Expenses extends Budget {
-    constructor(type, amount, category, percentage) {
+    constructor( amount, category, percentage, type = "Expense") {
         super(type, amount, category);
         this.percentage = percentage;
     }
 }
 
 class Incomes extends Budget {
-    constructor(type, amount, category) {
+    constructor( amount, category, type = "Income") {
         super(type, amount, category);
     }
 }

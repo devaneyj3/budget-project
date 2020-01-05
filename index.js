@@ -17,7 +17,7 @@ submitItem.addEventListener('click', function () {
     if (input.value && category.value) {
         if (option.value === 'exp') {
             //create new expense object
-            let newExpense = new Expenses(option.value, input.value, category.value);
+            let newExpense = new Expenses(input.value, category.value);
             expenseItems.push(newExpense);
 
             //add object amount to display
@@ -34,7 +34,7 @@ submitItem.addEventListener('click', function () {
         }
         else {
             //create new income object and push to array
-            let newIncome = new Incomes(option.value, input.value, category.value);
+            let newIncome = new Incomes(input.value, category.value);
             incomeItems.push(newIncome);
 
             //add object amount to display
